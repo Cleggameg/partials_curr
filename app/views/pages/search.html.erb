@@ -27,9 +27,12 @@
 
 <h4>Step 2:</h4>
 
-<p>Open /app/views/dogs/index.html.erb and add the search bar to search through your dogs under the sorting portion.</p>
+<p>Open /app/views/dogs/index.html.erb and add the search portion below to search through your dogs under the sorting portion.</p>
 
-<%=%>
+<%="< % = form_tag dogs_path, :method => 'get' do % >"%><br>
+  <%="< % = text_field_tag :search, params[:search], placeholder: \"Dog name\"% >"%><br>
+  <%="< % = submit_tag \"Search\"% >"%><br>
+<%="< % end % >"%><br>
 
 <p>Explanation: This form uses the same pathway as the sorting functions, dogs_path. It’s getting information as opposed to posting (submitting) it, so we denote the method as get using :method => ‘get’. We make a field to enter our search criteria using text_field_tag :search, params[:search], placeholder: "Dog name". This makes it so that upon submitting the form it will send a whatever you enter into the search bar as {search: “name”}, which is then used by the search method that we created in the previous step.</p>
 
