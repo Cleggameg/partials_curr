@@ -12,6 +12,19 @@ class PagesController < ApplicationController
   def show
   end
 
+  def search
+  end
+
+  def partials
+  end
+
+  def collections
+  end
+
+  def remotes
+  end
+
+
   # GET /pages/new
   def new
     @page = Page.new
