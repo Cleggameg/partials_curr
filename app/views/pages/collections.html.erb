@@ -1,0 +1,33 @@
+<h3>Goals:</h3>
+
+<p>We’ll be continuing with partials and going over how to render collections using partials. Like all partials, collection partials make code more manageable by breaking discrete parts out so they are easier to maintain. In this section we’ll be breaking out the /dogs/index.html.erb using a partial.</p>
+
+<h4>Step 1:</h4>
+
+<p>In /app/views/dogs/index.html take out the section between the two <%="<tbody>"%> tags. And put it into a new file called _dog.html.erb in /app/views/dogs/</p>
+
+    <%="< % @dogs.each do |dog| % >"%><br>
+      <%="<tr>"%><br>
+        <%="<td>< % = dog.name % ></td>"%><br>
+        <%="<td>< % = dog.age % ></td>"%><br>
+        <%="<td>< % = dog.breed.try(:name) % ></td>"%><br>
+        <%="<td>< % = link_to 'Show', dog % ></td>"%><br>
+        <%="<td>< % = link_to 'Edit', edit_dog_path(dog) % ></td>"%><br>
+        <%="<td>< % = link_to 'Destroy', dog, method: :delete, data: { confirm: 'Are you sure?' } % ></td>"%><br>
+      <%="</tr>"%><br>
+    <%="< % end % >"%>
+
+<p>We don’t need the loop anymore, because we will be rendering this using a collection, so let’s take off the line  <%="< % @dogs.each do |dog| % >"%> and the line <%="< % end % >"%>. What should be left is the two <tr> tags and the information in-between them.</p>
+
+<p>Explanation: What we’re going to be doing is making it so that this partial is rendered one time for each dog that’s supposed to appear on the page. If we have 10 dogs, this partial will be rendered 10 times, one for each dog. As such, we no longer need the loop; otherwise, it would do one loop for each dog we want on the page, and that’s too many dogs.</p>
+
+
+<h4>Step 2:</h4>
+
+<p>In /app/views/dogs/index.html replace what used to be in the <%="<tbody>"%> with <%="< % = render @dogs % >"%>.</p>
+
+<p>Explanation: We needed rails to use the _dog.html.erb partial. What’s happening now is we render the partial one time for each dog in our @dogs array. This makes it so that we can easily modify how the dogs render on the page moving forward by having this content in its own section.</p>
+
+<%= link_to 'partials', 'partials' %><br>
+<%= link_to "All Pages", root_path %><br>
+<%= link_to 'remotes', 'remotes' %>
