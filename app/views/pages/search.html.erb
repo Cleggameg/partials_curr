@@ -39,18 +39,18 @@
 
 <p>Replace the index method with:</p>
 
-  <%='def index' %>
-      <%='if params[:sort_by]' %>
-        <%='@dogs = Dog.search(params[:search]).sort_by(&params[:sort_by].to_sym)' %>
-      <%='elsif params[:babies]' %>
-        <%='@dogs = Dog.search(params[:search]).select{|d| d.age < 5 }' %>
-      <%='elsif params[:pictures]' %>
-        <%='@dogs = Dog.search(params[:search]).select{|d| !(d.picture_url.blank?) }' %>
-      <%='elsif params[:breed_id]' %>
-        <%='@dogs = Breed.find(params[:breed_id]).dogs' %>
-      <%='else' %>
-        <%='@dogs = Dog.search(params[:search])' %>
-      <%='end' %>
+  <%='def index' %><br>
+      <%='if params[:sort_by]' %><br>
+        <%='@dogs = Dog.search(params[:search]).sort_by(&params[:sort_by].to_sym)' %><br>
+      <%='elsif params[:babies]' %><br>
+        <%='@dogs = Dog.search(params[:search]).select{|d| d.age < 5 }' %><br>
+      <%='elsif params[:pictures]' %><br>
+        <%='@dogs = Dog.search(params[:search]).select{|d| !(d.picture_url.blank?) }' %><br>
+      <%='elsif params[:breed_id]' %><br>
+        <%='@dogs = Breed.find(params[:breed_id]).dogs' %><br>
+      <%='else' %><br>
+        <%='@dogs = Dog.search(params[:search])' %><br>
+      <%='end' %><br>
    <%=' end' %>
 
 <p>Explanation:</p>
@@ -59,4 +59,3 @@
 
 <%= link_to "All Pages", root_path %><br>
 <%= link_to 'partials', 'partials' %>
->>>>>>> c8264e6a23824aa1dc21e6cd6958d0668adcca8f
