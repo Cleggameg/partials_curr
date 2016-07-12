@@ -1,0 +1,61 @@
+<h3>Goals</h3>
+<p>You would like to be able to search dogs by their name and show them on the index page.</p>
+
+<p>For this, you will learn how to create a method in the model for searching and incorporating it into the DOG model.</p>
+
+<h4>Step 1:</h4>
+
+<p>Let’s add a search method to the model that allows us to search through our dogs based on their name.</p>
+
+<p>Enter the /app/models/dog.rb file and, under the line belongs_to :breed, add:</p>
+
+  <%="def self.search(name)"%><br>
+      <%="if name"%><br>
+        <%="where(\"name LIKE ?\", \"%\#{name}%\")"%><br>
+      <%="else"%><br>
+        <%="all"%><br>
+      <%="end"%><br>
+    <%="end" %>
+
+<p>Explanation:</p>
+
+<p>When we use our new search method on Dog, it accepts an argument of name. If there’s a name provided, it searches to database for dogs where their name is similar to that of name provided.</p>
+
+<p>The %name% makes it so that the database is searched for anything that begins or ends with the with the name variable provided. If you want to search only for exact names, remove the %s.</p>
+
+<p>If no name is provided, all dogs are returned, instead of where(“name LIKE?”, “%#{name}%”), using the all method.</p>
+
+<h4>Step 2:</h4>
+
+<p>Open /app/views/dogs/index.html.erb and add the search bar to search through your dogs under the sorting portion.</p>
+
+<%=%>
+
+<p>Explanation: This form uses the same pathway as the sorting functions, dogs_path. It’s getting information as opposed to posting (submitting) it, so we denote the method as get using :method => ‘get’. We make a field to enter our search criteria using text_field_tag :search, params[:search], placeholder: "Dog name". This makes it so that upon submitting the form it will send a whatever you enter into the search bar as {search: “name”}, which is then used by the search method that we created in the previous step.</p>
+
+<h4>Step 3:</h4>
+
+<p>Open /app/controllers/dogs_controller.rb</p>
+
+<p>Replace the index method with:</p>
+
+  <%='def index' %>
+      <%='if params[:sort_by]' %>
+        <%='@dogs = Dog.search(params[:search]).sort_by(&params[:sort_by].to_sym)' %>
+      <%='elsif params[:babies]' %>
+        <%='@dogs = Dog.search(params[:search]).select{|d| d.age < 5 }' %>
+      <%='elsif params[:pictures]' %>
+        <%='@dogs = Dog.search(params[:search]).select{|d| !(d.picture_url.blank?) }' %>
+      <%='elsif params[:breed_id]' %>
+        <%='@dogs = Breed.find(params[:breed_id]).dogs' %>
+      <%='else' %>
+        <%='@dogs = Dog.search(params[:search])' %>
+      <%='end' %>
+   <%=' end' %>
+
+<p>Explanation:</p>
+
+<p>Adding the search method to all of the Dog calls allow you to search no matter what you’re sorting by. If search criteria is entered, it uses the search method to call .where("name LIKE ?", "%#{name}%"), if no search criteria is entered, say you sort only, it will call .all, leaving it basically the same as it was prior to creating the search method; therefore, it should add to the functionality to the site and not take anything away.</p>
+
+<%= link_to "All Pages", root_path %><br>
+<%= link_to 'partials', 'partials' %>

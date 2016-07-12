@@ -1,0 +1,55 @@
+<h3>Goals:</h3>
+
+<p>We want our code to be as modular as possible. Each piece should have its own job and should only concern itself with doing that job. In this section, we will be adding partials in order to clean up or code and make it more manageable for the future.</p>
+
+<h4>Step 1:</h4>
+
+<p>In /app/views/layouts create a new file and name it _header.html.erb. The underscore is what denotes it at a partial. You’ll notice you’ve already encountered partials in modifying your _form.html.erb file for the /app/views/dogs/_form.html.erb. In our new _header.html.erb file, include the following:</p>
+
+<%="<h1>Chicago's own house of 1000 pooches!</h1>"%><br>
+<%="<h6>The best dog rescue in town</h6>"%>
+
+<p>Explanation:</p>
+
+<p>What we’ve done here is made a header that will appear on every page regardless of where you are in the app. It makes it so that you can have a uniform look to all the pages, and makes certain features available on each page. Login and logout functions are typically kept inside a header partial on applications that require logging in and out.</p>
+
+<h4>Step 2:</h4>
+
+<p>In /app/view/layouts/application.html.erb add the following line above <%="< %= yield % >"%></p>
+
+<%="< % = render 'layouts/header' % >" %>
+<p>Explanation:</p>
+
+<p>application.html.erb behaves differently than most other pages. It is rendered regardless of what page you visit. Each page is build within the <%="< % = yield % >" %> and anything below or above it is added to every page, regardless of location. What we just did made it so that the _header.html.erb parital is rendered on every page above the page’s actual content. If we put our <%="< % = render ‘/layouts/header’ % >" %> below, it would have the _header.html.erb partial below the page’s content, effectively making it a footer.</p>
+
+<h4>Step 3</h4>
+
+<p>In /app/views/dogs create a new file and name it _search_and_sort.html.erb and move the search and sorting code from our index into our new partial. It should be:</p>
+
+<%="< % = form_tag dogs_path, :method => 'get' do % >"%><br>
+  <%="< % = text_field_tag :search, params[:search], placeholder: \"Dog name\"% >"%><br>
+  <%="< % = submit_tag \"Search\"% >"%><br>
+<%="< % end % >"%><br>
+<%="<p>Sort:"%><br>
+  <%="< % = link_to \"by name\", dogs_path(sort_by: :name) % >"%><br>
+  <%="< % = link_to \"by age\", dogs_path(sort_by: :age) % >"%><br>
+<%="</p>"%><br>
+<%="<p>Filter:"%><br>
+  <%="< % = link_to \"dogs under 5yo\", dogs_path(babies: :true) % >"%><br>
+<%="</p>"%><br>
+<%="< % Breed.all.each do |b| % >"%><br>
+  <%="< % = link_to b.name, dogs_path(breed_id: b.id) % >"%><br>
+<%="< % end % >"%>
+
+<p>Now in our dogs/index.hmtl.erb file, we’ll remove the code for the search/sort and put in another render to render our new partial, under <%="<p id=\"notice\">< % = notice % ></p>"%> and replace it with:</p>
+
+<%="< % = render 'dogs/search_and_sort' % >"%>
+
+<p>Explanation:</p>
+
+<p>We want to make to so making changes to our search/sort section is as easy as possible. One way to do this is making it so that the search/sort is in it’s own partial, so it’s easy to locate and modify moving forward. The header looks cleaned up too. All these things make it so that your project is more manageable going forward.
+</p>
+
+<%= link_to 'search', 'search' %><br>
+<%= link_to "All Pages", root_path %><br>
+<%= link_to 'collections', 'collections' %>

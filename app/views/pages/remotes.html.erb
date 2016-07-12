@@ -1,0 +1,47 @@
+<h3>Goals:</h3>
+
+<p>We want our app to be fast. Modern apps appear as they never refresh. Remember back to the 90's when you were loading your favorite fan site and it took 5 minutes? Those days are over. We want it to appear as though our app behaves instantaneously. In order to do that, we need to add some JavaScript and use some data remotes.</p>
+
+<h4>Step 1:</h4>
+
+<p>In /app/views/dogs/index.html.erb</p>
+
+<p>Add an id of ‘dog-table’ to the <%="<tbody> tag. It’s done like this:"%>
+
+<%="<tbody id=’dog-table’>"%>
+
+<p>Explination:</p>
+
+<p>We need to have some way to identify where we want our data, rendered through JavaScript, to go. It’d be nice if we could search and sort through our dogs without having to refresh the page. Seeing as the data goes in the tbody, we want our updated and changing data to go to the same place; therefore, we need to give our app a place that we can put this data, which would is most easily done in the table’s body, using our dog partial.</p>
+
+<h4>Step 2:</h4>
+
+<p>In /app/view/dogs/_search_and_sort.html.erb, add the a ,remote: true param to each of the sort links. Make sure you put a coma before the remote: true. Add a ,remote: true param to the search form. It should go after the method: => ‘get’.</p>
+
+<p>It should look something like this when we’re done:</p>
+
+<%="< % = form_tag dogs_path, :method => 'get', remote: true do % >"%><br>
+  <%="< % = text_field_tag :search, params[:search], placeholder: \"Dog name\"% >"%><br>
+  <%="< % = submit_tag \"Search\"% >"%><br>
+<%="< % end % >"%><br>
+<%="<p>Sort:"%><br>
+  <%="< % = link_to \"by name\", dogs_path(sort_by: :name), remote: true % >"%><br>
+  <%="< % = link_to \"by age\", dogs_path(sort_by: :age), remote: true % >"%><br>
+<%="</p>"%><br>
+<%="<p>Filter:"%><br>
+  <%="< % = link_to \"dogs under 5yo\", dogs_path(babies: :true), remote: true % >"%><br>
+<%="</p>"%><br>
+<%="< % Breed.all.each do |b| % >"%><br>
+  <%="< % = link_to b.name, dogs_path(breed_id: b.id), remote: true % >"%><br>
+<%="< % end % >"%>
+
+<h4>Step 3:</h4>
+
+<p>In /app/views/dogs create a new file that’s called index.js.erb. In this file put:</p>
+
+<%="$('tbody#dog-table').html('< % = escape_javascript(render @dogs) % >');"%>
+
+<p>Explanation: Whenever the dogs_controller’s dogs#index method is hit by a link or form that has a remote: true on it, the controller responds by rendering the index.js.erb file instead of the index.html.erb file. When it does, it goes into page that’s currently open (index.html.erb) and looks for a <%="<tbody>"%> with an id of “dog-table”. If and when it finds that, it replaces the html that exists within the <%="<tbody>"%> tag and replaces it with the html dictated. In this case, we want it respond by rendering our dog partial. That way, the app will stay on the same page and update what is in the tbody with the dogs we dictated through our searching or sorting.</p>
+
+<%= link_to 'collections', 'collections' %><br>
+<%= link_to "All Pages", root_path %>
